@@ -1,24 +1,32 @@
 import { Link, Outlet } from "umi";
 import styles from "./index.less";
-
 import { Button } from "antd";
+import WalletProvider from "@/components/WalletProvider";
+import useWallet from "@/hooks/useWallet";
 
 export default function Layout() {
   return (
-    <div className={styles.navs}>
-      <Button type="primary">connect wallet</Button>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/docs">Docs</Link>
-        </li>
-        <li>
-          <a href="https://github.com/umijs/umi">Github</a>
-        </li>
-      </ul>
-      <Outlet />
+    <>
+      <WalletProvider>
+        <div>
+          <ConnectWallet />
+        </div>
+      </WalletProvider>
+    </>
+  );
+}
+
+function ConnectWallet() {
+  const { connect, account } = useWallet();
+  const connectWallet = () => {
+    connect("metamask");
+  };
+  return (
+    <div>
+      <Button type="primary" onClick={connectWallet}>
+        ConnectWallet
+      </Button>
+      <div>account: {account}</div>
     </div>
   );
 }
